@@ -1,0 +1,66 @@
+<div class="container mt-4">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="d-flex align-items-center mb-4">
+                <a routerLink="/tasks" class="btn btn-outline-secondary me-3">
+                    <i class="fas fa-arrow-left"></i> Back
+                </a>
+                <h2 class="mb-0">
+                    <i class="fas" [ngClass]="isEditMode ? 'fa-edit' : 'fa-plus-circle'"></i>
+                    {{ isEditMode ? 'Edit Task' : 'Create New Task' }}
+                </h2>
+            </div>
+
+            <div class="card card-shadow border-0">
+                <div class="card-body p-4">
+                    <form [formGroup]="taskForm" (ngSubmit)="onSubmit()">
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Title <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" formControlName="title"
+                                placeholder="Enter task title"
+                                [ngClass]="{ 'is-invalid': taskForm.get('title')?.touched && taskForm.get('title')?.invalid }">
+                            <div class="invalid-feedback" *ngIf="taskForm.get('title')?.errors?.['required']">
+                                Title is required.
+                            </div>
+                            <div class="invalid-feedback" *ngIf="taskForm.get('title')?.errors?.['maxlength']">
+                                Title cannot exceed 100 characters.
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Description</label>
+                            <textarea class="form-control" formControlName="description" rows="4"
+                                placeholder="Enter task description (optional)"
+                                [ngClass]="{ 'is-invalid': taskForm.get('description')?.touched && taskForm.get('description')?.invalid }"></textarea>
+                            <div class="invalid-feedback" *ngIf="taskForm.get('description')?.errors?.['maxlength']">
+                                Description cannot exceed 500 characters.
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label fw-bold">Status <span class="text-danger">*</span></label>
+                            <select class="form-select" formControlName="status">
+                                <option value="TO_DO">To Do</option>
+                                <option value="IN_PROGRESS">In Progress</option>
+                                <option value="DONE">Done</option>
+                            </select>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-light border fw-bold me-2"
+                                routerLink="/tasks">Cancel</button>
+                            <button type="submit" class="btn btn-primary fw-bold px-4"
+                                [disabled]="taskForm.invalid || loading">
+                                <span *ngIf="loading" class="spinner-border spinner-border-sm me-2" role="status"
+                                    aria-hidden="true"></span>
+                                <i class="fas fa-save me-1" *ngIf="!loading"></i> Save Task
+                            </button>
+                        </div>
+
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
